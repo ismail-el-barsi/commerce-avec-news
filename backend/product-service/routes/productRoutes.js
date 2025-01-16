@@ -1,6 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { isAuth } from '../../utils.js';
+import { isAuth, sendProductCreationEmail } from '../../utils.js';
 import Product from '../Models/productModel.js';
 
 const productRouter = express.Router();
@@ -29,6 +29,7 @@ productRouter.post(
       });
 
       const createdProduct = await product.save();
+      await sendProductCreationEmail(req.user, createdProduct);
       res.status(201).send({
         message: 'Produit créé avec succès',
         product: createdProduct,
