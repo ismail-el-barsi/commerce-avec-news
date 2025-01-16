@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import Product from '../Models/productModel.js';
 import { isAuth } from '../../utils.js';
+import Product from '../Models/productModel.js';
 
 const productRouter = express.Router();
 
@@ -9,27 +9,6 @@ productRouter.get('/', async (req, res) => {
   const products = await Product.find();
   res.send(products);
 });
-productRouter.get(
-  '/myproducts',
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    try {
-      const userId = req.user._id;
-      const products = await Product.find({ owner: userId });
-      if (products.length > 0) {
-        res.send(products);
-      } else {
-        res
-          .status(404)
-          .send({ message: 'Aucun produit trouvé pour cet utilisateur' });
-      }
-    } catch (err) {
-      res
-        .status(500)
-        .send({ message: 'Erreur lors de la récupération des produits' });
-    }
-  })
-);
 
 productRouter.post(
   '/create',
