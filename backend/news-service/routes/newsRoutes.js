@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../../utils.js';
-import News from '../Models/newsModel.js';
+import News from '../Models/newsModels.js';
 
 const newsRouter = express.Router();
 
