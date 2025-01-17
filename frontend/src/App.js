@@ -11,6 +11,8 @@ import SearchBox from './components/SearchBox';
 import logo from './logo/logo.png';
 import CreateProductPage from './screens/CreateProductPage.js';
 import HomeScreen from './screens/HomeScreen.js';
+import NewsListScreen from './screens/NewsListScreen.js';
+import NewsScreen from './screens/NewsScreen.js';
 import ProductEditScreen from './screens/ProductEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductScreen from './screens/ProductScreen.js';
@@ -83,6 +85,14 @@ function App() {
               <Navbar.Collapse id='basic-navbar-nav'>
                 <SearchBox />
                 <Nav className='me-auto w-100 justify-content-end'>
+                  <Link className='nav-link' to='/news'>
+                    <Button
+                      variant='outline-light'
+                      className='d-flex align-items-center'
+                    >
+                      Voir les Actualités
+                    </Button>
+                  </Link>
                   {userInfo ? (
                     <NavDropdown
                       title={userInfo.username}
@@ -156,9 +166,11 @@ function App() {
           <Container className='mt-3'>
             <Routes>
               <Route path='/product/:slug' element={<ProductScreen />} />
+              <Route path='/news/:slug' element={<NewsScreen />} />
               <Route path='/' element={<HomeScreen />} />
               <Route path='/search' element={<SearchScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/news' element={<NewsListScreen />} />
               <Route
                 path='/profile'
                 element={
