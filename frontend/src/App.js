@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import SearchBox from './components/SearchBox';
 import logo from './logo/logo.png';
+import CreateNewsPage from './screens/CreateNewsScreen.js';
 import CreateProductPage from './screens/CreateProductPage.js';
 import HomeScreen from './screens/HomeScreen.js';
 import NewsListScreen from './screens/NewsListScreen.js';
@@ -131,6 +132,9 @@ function App() {
                       <LinkContainer to='/admin/users'>
                         <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
                       </LinkContainer>
+                      <LinkContainer to='/admin/news'>
+                        <NavDropdown.Item>Actualités</NavDropdown.Item>
+                      </LinkContainer>
                     </NavDropdown>
                   )}
                 </Nav>
@@ -196,6 +200,7 @@ function App() {
                 path='/admin/user/:id'
                 element={<UserEditScreen />}
               ></Route>
+              <Route path='/admin/news' element={<CreateNewsPage />}></Route>
             </Routes>
           </Container>
         </main>
