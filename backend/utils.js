@@ -69,3 +69,29 @@ export const sendProductCreationEmail = async (user, product) => {
     throw new Error("Erreur lors de l'envoi de l'email de création de produit");
   }
 };
+
+export const sendNewsCreationEmail = async (user, news) => {
+  const sgMail = sendGrid();
+  const msg = {
+    to: `${user.username} <${user.email}>`,
+    from: `Votre News Service <${process.env.SENDER_EMAIL}>`,
+    subject: 'Nouvelle news créée avec succès !',
+    html: `
+      <p>Bonjour ${user.username},</p>
+      <p>Votre nouvelle news "${news.title}" a été créée avec succès.</p>
+      <p>Voici les détails de la news :</p>
+      <ul>
+        <li>Titre : ${news.title}</li>
+        <li>Contenu : ${news.content}</li>
+      </ul>
+      <p>Merci d'ajouter une nouvelle actualité à notre plateforme !</p>
+    `,
+  };
+
+  try {
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de l'email de confirmation de news :", error);
+    throw new Error("Erreur lors de l'envoi de l'email de confirmation de news");
+  }
+};
