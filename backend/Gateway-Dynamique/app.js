@@ -14,6 +14,7 @@ app.use((req, res, next) => {
 const serviceMap = {
   users: 'http://localhost:3001',
   products: 'http://localhost:3002',
+  news: 'http://localhost:3004',  // URL de votre service news
 };
 
 app.use('/:service', (req, res, next) => {
