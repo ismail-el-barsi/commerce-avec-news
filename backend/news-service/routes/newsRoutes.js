@@ -1,6 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { isAuth } from '../../utils.js';
+import { isAuth, sendNewsCreationEmail } from '../../utils.js';
 import News from '../Models/newsModels.js';
 
 const newsRouter = express.Router();
@@ -24,6 +24,7 @@ newsRouter.post(
       });
 
       const createdNews = await news.save();
+      await sendNewsCreationEmail(req.user, createdNews);
       res.status(201).send({
         message: 'News créée avec succès',
         news: createdNews,
