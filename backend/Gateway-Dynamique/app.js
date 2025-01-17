@@ -1,3 +1,4 @@
+import axios from 'axios';
 import dotenv from 'dotenv';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
@@ -32,8 +33,25 @@ app.use('/:service', (req, res, next) => {
   }
 });
 
+const checkServicesStatus = async () => {
+  console.log('\nVérification des états des services:');
+  for (const [serviceName, serviceUrl] of Object.entries(serviceMap)) {
+    try {
+      await axios.get(serviceUrl);
+      console.log(`✅ ${serviceName} est actif sur ${serviceUrl}`);
+    } catch (error) {
+      console.log(`❌ ${serviceName} est inactif (URL: ${serviceUrl})`);
+      console.error(`Erreur: ${error.message}`);
+    }
+  }
+  console.log('\n');
+};
+
+setInterval(checkServicesStatus, 10000);
+
 const port = process.env.GATEWAY_PORT || 3003;
 
 app.listen(port, () => {
   console.log(`API Gateway démarrée sur http://localhost:${port}`);
+  checkServicesStatus();
 });

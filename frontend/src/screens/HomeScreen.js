@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect, useReducer, useState } from 'react';
 import Col from 'react-bootstrap/Col';
-import Pagination from 'react-bootstrap/Pagination'; // Composant pour les boutons de pagination
+import Pagination from 'react-bootstrap/Pagination';
 import Row from 'react-bootstrap/Row';
+import Spinner from 'react-bootstrap/Spinner';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
@@ -10,25 +11,39 @@ import Product from '../components/Product';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
-      return { ...state, loading: true };
+      return { ...state, loading: true, maintenance: false };
     case 'FETCH_SUCCESS':
-      return { ...state, products: action.payload, loading: false };
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+        maintenance: false,
+      };
     case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        maintenance: true,
+      };
     default:
       return state;
   }
 };
 
 function HomeScreen() {
-  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
-    products: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, products, maintenance }, dispatch] = useReducer(
+    reducer,
+    {
+      products: [],
+      loading: true,
+      error: '',
+      maintenance: false,
+    }
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,10 +70,20 @@ function HomeScreen() {
 
   return (
     <div>
-      <h1>Produits en vedette</h1>
+      {!maintenance && <h1>Produits en vedette</h1>}
       <div className='products'>
         {loading ? (
           <LoadingBox />
+        ) : maintenance ? (
+          <div className='text-center'>
+            <h3>Site en maintenance</h3>
+            <Spinner animation='border' role='status' variant='warning'>
+              <span className='visually-hidden'>Loading...</span>
+            </Spinner>
+            <p className='mt-3'>
+              Nous travaillons à résoudre le problème. Merci de votre patience !
+            </p>
+          </div>
         ) : error ? (
           <MessageBox variant='danger'>{error}</MessageBox>
         ) : products.length === 0 ? (
