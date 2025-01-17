@@ -13,6 +13,18 @@ newsRouter.get(
   })
 );
 
+newsRouter.get(
+  '/slug/:slug',
+  expressAsyncHandler(async (req, res) => {
+    const news = await News.findOne({ slug: req.params.slug });
+    if (news) {
+      res.send(news);
+    } else {
+      res.status(404).send({ message: 'News Not Found' });
+    }
+  })
+);
+
 newsRouter.post(
   '/create',
   isAuth,
@@ -20,6 +32,7 @@ newsRouter.post(
     try {
       const news = new News({
         title: req.body.title,
+        slug: req.body.slug,
         content: req.body.content,
       });
 
@@ -30,7 +43,9 @@ newsRouter.post(
         news: createdNews,
       });
     } catch (err) {
-      res.status(500).send({ message: 'Erreur lors de la création de la news' });
+      res
+        .status(500)
+        .send({ message: 'Erreur lors de la création de la news' });
     }
   })
 );
