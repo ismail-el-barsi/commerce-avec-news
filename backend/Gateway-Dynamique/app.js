@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
@@ -6,6 +7,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use((req, res, next) => {
   console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url}`);
   next();
@@ -31,9 +33,8 @@ app.use('/:service', (req, res, next) => {
     res.status(502).send(`Service ${serviceName} non disponible.`);
   }
 });
-
-const port = process.env.GATEWAY_PORT || 3003;
+const port = 3003;
 
 app.listen(port, () => {
-  console.log(`API Gateway démarrée sur http://localhost:${port}`);
+  console.log(`serve at http://localhost:${port}`);
 });

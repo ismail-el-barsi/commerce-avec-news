@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile.user-service
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - '3001:3001'
+    command: ['node', 'user-service/app.js']
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile.product-service
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - '3002:3002'
+    command: ['node', 'product-service/app.js']
+
+  news-service:
+    build:
+      context: ./news-service
+      dockerfile: Dockerfile.news-service
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - '3004:3004'
+    command: ['node', 'news-service/app.js']
+
+  gateway-dynamique:
+    build:
+      context: ./Gateway-Dynamique
+      dockerfile: Dockerfile.gateway-dynamique
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - '3003:3003'
+    command: ['node', 'Gateway-Dynamique/app.js']
+    depends_on:
+      - user-service
+      - product-service
+      - news-service
