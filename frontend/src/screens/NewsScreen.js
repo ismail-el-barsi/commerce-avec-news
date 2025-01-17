@@ -48,8 +48,8 @@ function NewsScreen() {
     <MessageBox variant='danger'>{error}</MessageBox>
   ) : (
     <div>
-      <h1>{news.title}</h1> {/* Affiche le titre de l'actualité */}
-      <p>{news.content}</p> {/* Affiche le contenu complet de l'actualité */}
+      <h1>{news.title}</h1>
+      <p>{news.content}</p>
     </div>
   );
 }
